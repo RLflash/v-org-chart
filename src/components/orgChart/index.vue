@@ -1,8 +1,8 @@
 <template>
-	<div id="orgChartWrap">
+	<div id="orgChartWrap" :class="direction">
 		<canvas id="lineCanvas"></canvas>
-		<orgChart id="orgChart" :orgStruData=orgChartData />
-		</div>
+		<orgChart id="orgChart" :orgStruData=orgChartData  :direction="direction" :showField="showField" />
+	</div>
 </template>
 
 <script>
@@ -12,7 +12,22 @@ export default {
 	components: {
 		orgChart
 	},
-	props:['orgChartData'],
+	props: {
+		orgChartData:{
+			type:Array,
+			default(){
+				return [];
+			}
+		},
+		direction:{
+			type:String,
+			default:'upDown'
+		},
+		showField:{
+			type:String,
+			default:''
+		}
+	},
 	data(){
 		return {
 			context:null,
@@ -46,7 +61,17 @@ export default {
 		drawLine(l,t,lc,tc){
 			this.context.beginPath();
 			this.context.moveTo(l, t);
-			this.context.bezierCurveTo(l,t+10,lc,t,lc,tc);
+			if(this.direction=="upDown"){
+				this.context.bezierCurveTo(l,t+10,lc,t,lc,tc);
+			}else{
+				if(t>tc){
+					this.context.bezierCurveTo(lc-10,t,l,t-10,lc,tc);
+				}else if(t==tc){
+					this.context.bezierCurveTo(lc,t,l,t,lc,tc);
+				}else{
+					this.context.bezierCurveTo(lc-10,t,l,t+10,lc,tc);
+				}
+			}
 			this.context.stroke();
 		},
 		getLinePositon(nodeEle){
@@ -54,12 +79,20 @@ export default {
 			let elePosition;
 			for(let n=0;n<childNode.length;n++){
 				if(childNode[n].className=="orgLevel"){
-					elePosition={top:childNode[n].offsetTop+childNode[n].clientHeight,left:childNode[n].offsetLeft+childNode[n].clientWidth/2,child:[]}
+					if(this.direction=="upDown"){
+						elePosition={top:childNode[n].offsetTop+childNode[n].clientHeight,left:childNode[n].offsetLeft+childNode[n].clientWidth/2,child:[]}
+					}else{
+						elePosition={top:childNode[n].offsetTop+childNode[n].clientHeight/2,left:childNode[n].offsetLeft+childNode[n].clientWidth,child:[]}
+					}
 				}
 				if(childNode[n].className=="struWrap"){
 					for(let j=0;j<childNode[n].childNodes.length;j++){
 						if(childNode[n].childNodes[j].childNodes[0].className=="orgLevel"){
+							if(this.direction=="upDown"){
 							elePosition.child.push({top:childNode[n].childNodes[j].childNodes[0].offsetTop,left:childNode[n].childNodes[j].childNodes[0].offsetLeft+childNode[n].childNodes[j].childNodes[0].clientWidth/2})
+							}else{
+								elePosition.child.push({top:childNode[n].childNodes[j].childNodes[0].offsetTop+childNode[n].childNodes[j].childNodes[0].clientHeight/2,left:childNode[n].childNodes[j].childNodes[0].offsetLeft})
+							}
 						}
 					}
 				}
