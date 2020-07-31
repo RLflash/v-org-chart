@@ -20,14 +20,23 @@ orgChartData
 
 例:
 ```
-[{
- level:'皇帝',
- child:[{
-  level:'将军',
-  child:[{
-   level:'百夫长1',
-   child:[]
-  }]
- }]
-}]
+<v-org-chart :orgChartData="res"/>
+
+import vOrgChart from 'v-org-chart'
+
+ 
+data(){
+	return {
+		res:[{
+			level:'皇帝',
+			child:[{
+				level:'将军',
+				child:[{
+					level:'百夫长1',
+					child:[]
+				}]
+			}]
+		}]
+	}
+}
 ```
