@@ -15,19 +15,19 @@ npm run serve
 ## 安装v-org-chart包
 npm i v-org-chart
 
-##参数
+## 参数
 orgChartData
 
 例:
 ```
 [{
-	level:'皇帝',
-	child:[{
-					level:'将军',
-					child:[{
-									level:'百夫长1',
-									child:[]
-								}]
-				}]
+ level:'皇帝',
+ child:[{
+  level:'将军',
+  child:[{
+   level:'百夫长1',
+   child:[]
+  }]
+ }]
 }]
 ```
