@@ -13,8 +13,8 @@ export default {
   },
 	data(){
 		return {
-			direction:'upDown',
-		//	showField:'level',
+			direction:'leftRight',
+			showField:'level',
 			res:[{level:'皇帝',
 					child:[{
 							level:'将军',
