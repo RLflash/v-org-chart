@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-			<org-chart :orgChartData="res"/>
+			<org-chart :orgChartData="res" :direction="direction" :showField="showField"/>
   </div>
 </template>
 
@@ -13,6 +13,8 @@ export default {
   },
 	data(){
 		return {
+			direction:'leftRight',
+			showField:'level',
 			res:[{level:'皇帝',
 					child:[{
 							level:'将军',
